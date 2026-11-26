@@ -1,0 +1,2539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="briefing">
+  <title>SKILLNOMICS 2026 — Pertemuan 1: Python &amp; Google Colab untuk Data Kuesioner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces: warm stone-white paper */
+      --background: #faf9f5;
+      --surface-container-low: #ffffff;
+      --surface-container: #f1efe8;
+      --surface-container-high: #e6e2d6;
+
+      /* Ink */
+      --on-surface: #17181a;
+      --on-surface-variant: #56585c;
+
+      /* Rules */
+      --outline: #17181a;
+      --outline-variant: #dedad0;
+
+      /* Accents */
+      --primary: #17181a;
+      --on-primary: #faf9f5;
+      --primary-container: #f2b705;
+      --on-primary-container: #17181a;
+      --secondary: #1f4e5f;
+      --tertiary: #785008;
+      --error: #b42318;
+      --on-error: #ffffff;
+
+      /* Data series */
+      --data-1: #1f4e5f;
+      --data-2: #d99000;
+      --data-3: #2b6e52;
+      --data-4: #b84a39;
+      --data-context: #c4bfb2;
+
+      /* Fonts */
+      --font-headline: 'Source Serif 4', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-label: 'Geist Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.25rem;
+      --rounded-lg: 0.375rem;
+      --rounded-full: 0.25rem;
+
+      /* Style effects */
+      --section-rule: 1.5px solid var(--outline);
+      --card-border: 1px solid var(--outline-variant);
+      --badge-radius: 2px;
+      --heading-tracking: -0.02em;
+      --label-tracking: 0.08em;
+
+      /* Semantic & code block tokens */
+      --positive: #2b6e52;
+      --positive-bg: #e7f3ed;
+      --warning: #785008;
+      --warning-bg: #fcf3dc;
+      --error-bg: #fdecec;
+      --secondary-soft: #e6eff2;
+      --focus: #1f4e5f;
+
+      --code-bg: #17181a;
+      --code-header: #22252a;
+      --code-border: #333840;
+      --code-text: #f2f0ea;
+      --code-muted: #9ea4ad;
+      --code-kw: #f2b705;
+      --code-str: #7cc4e8;
+      --code-fn: #7ce0b3;
+      --code-num: #f4a28c;
+
+      --shadow-deck: 0 12px 36px rgba(23, 24, 26, 0.07);
+      --shadow-overlay: 0 18px 48px rgba(23, 24, 26, 0.16);
+      --backdrop: rgba(23, 24, 26, 0.55);
+
+      /* Type scale */
+      --display-size: clamp(2.15rem, 1.35rem + 2.8vw, 3.35rem);
+      --headline-size: clamp(1.55rem, 1.15rem + 1.5vw, 2.25rem);
+      --subhead-size: clamp(1.0625rem, 0.98rem + 0.4vw, 1.25rem);
+      --body-size: clamp(0.95rem, 0.92rem + 0.18vw, 1.0625rem);
+      --label-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+    button, input, select, textarea { font-family: inherit; }
+
+    /* Focus visibility */
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Presentation Shell */
+    .deck-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: var(--space-md) var(--space-lg);
+      gap: var(--space-md);
+    }
+
+    /* Top utility bar */
+    .deck-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: var(--card-border);
+      flex-wrap: wrap;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .dossier-pill {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: var(--label-tracking);
+      text-transform: uppercase;
+      padding: 0.22rem 0.55rem;
+      border-radius: var(--badge-radius);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .dossier-pill--dark {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .dossier-pill--teal {
+      background: var(--secondary);
+      color: var(--on-primary);
+    }
+
+    .dossier-meta {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .slide-counter-badge {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      color: var(--on-surface);
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      padding: 0.45rem 0.75rem;
+      border-radius: var(--rounded);
+      font-variant-numeric: tabular-nums;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 44px;
+      padding: 0.5rem 0.95rem;
+      border-radius: var(--rounded);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  color var(--dur-micro) var(--ease-out),
+                  border-color var(--dur-micro) var(--ease-out),
+                  transform var(--dur-micro) var(--ease-out);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn:active:not(:disabled) { transform: translateY(1px); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--secondary); border-color: var(--secondary); }
+
+    .btn-secondary {
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      border-color: var(--outline-variant);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--surface-container);
+      border-color: var(--outline);
+    }
+
+    .btn-gold {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      border-color: var(--primary-container);
+    }
+    .btn-gold:hover:not(:disabled) {
+      background: var(--surface-container-high);
+      border-color: var(--outline);
+    }
+
+    .btn-sm {
+      min-height: 36px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8125rem;
+    }
+
+    /* Progress strip */
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--surface-container-high);
+      border-radius: var(--badge-radius);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 10%;
+      background: var(--secondary);
+      transition: width var(--dur-short) var(--ease-out);
+    }
+
+    /* Slide Viewport */
+    .slide-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 560px;
+    }
+
+    .slide {
+      display: none;
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--shadow-deck);
+      padding: clamp(1.25rem, 1rem + 1.8vw, 2.5rem);
+      flex: 1;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    .slide.is-active {
+      display: flex;
+      animation: slideEnter var(--dur-short) var(--ease-out);
+    }
+
+    @keyframes slideEnter {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Briefing Dossier Bar inside Slide */
+    .dossier-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      border-bottom: var(--section-rule);
+      padding-bottom: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .dossier-bar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .slide-index-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 0.06em;
+    }
+
+    /* Slide Headings */
+    .slide-head {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .slide-title {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-size: var(--headline-size);
+      letter-spacing: var(--heading-tracking);
+      line-height: 1.12;
+      margin: 0;
+      color: var(--on-surface);
+    }
+
+    .standfirst {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--subhead-size);
+      color: var(--secondary);
+      margin: 0;
+      max-width: 68ch;
+      line-height: 1.4;
+    }
+
+    .prose {
+      margin: 0;
+      max-width: 65ch;
+      color: var(--on-surface);
+      line-height: 1.6;
+    }
+
+    .muted {
+      color: var(--on-surface-variant);
+      font-size: 0.925rem;
+    }
+
+    /* Grids & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .grid-asym {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .grid-asym-rev {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+
+    .figure-card {
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .figure-card--white {
+      background: var(--surface-container-low);
+    }
+
+    .figure-card--accent {
+      border-top: 3px solid var(--secondary);
+    }
+
+    .figure-card--gold {
+      border-top: 3px solid var(--primary-container);
+    }
+
+    .figure-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .aside-box {
+      background: var(--surface-container);
+      border-top: var(--section-rule);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: 0 0 var(--rounded) var(--rounded);
+    }
+
+    .callout-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--rounded);
+      color: var(--on-surface);
+    }
+
+    .callout-positive {
+      background: var(--positive-bg);
+      border-left: 4px solid var(--positive);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--rounded);
+      color: var(--on-surface);
+    }
+
+    .index-num {
+      font-family: var(--font-label);
+      font-weight: 600;
+      font-size: var(--label-size);
+      color: var(--secondary);
+      background: var(--secondary-soft);
+      padding: 0.2rem 0.45rem;
+      border-radius: var(--badge-radius);
+      display: inline-block;
+      width: fit-content;
+    }
+
+    /* Slide 1 CV & Profile Layout */
+    .speaker-layout {
+      display: grid;
+      grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+      gap: var(--space-lg);
+      align-items: stretch;
+    }
+
+    .speaker-profile-card {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-md);
+      border-bottom: 5px solid var(--primary-container);
+    }
+
+    .speaker-photo-frame {
+      width: 100%;
+      aspect-ratio: 4 / 4.2;
+      border-radius: var(--rounded);
+      overflow: hidden;
+      background: #23272e;
+      border: 2px solid var(--primary-container);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .speaker-photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .speaker-photo-fallback {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-md);
+      color: var(--on-primary);
+      gap: 0.4rem;
+    }
+
+    .speaker-photo-frame.is-missing img {
+      display: none;
+    }
+
+    .speaker-photo-frame.is-missing .speaker-photo-fallback {
+      display: flex;
+    }
+
+    .speaker-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .speaker-tag {
+      font-family: var(--font-label);
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--on-primary);
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--badge-radius);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .cv-sections-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .cv-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+
+    .cv-block {
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .cv-block--featured {
+      background: var(--secondary-soft);
+      border-color: var(--secondary);
+      border-left: 4px solid var(--secondary);
+    }
+
+    .cv-block--gold {
+      border-top: 3px solid var(--primary-container);
+    }
+
+    .cv-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .cv-block-title {
+      font-family: var(--font-label);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .cv-list {
+      margin: 0;
+      padding-left: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-size: 0.915rem;
+      line-height: 1.5;
+    }
+
+    .cv-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.15rem;
+    }
+
+    .cv-skill-chip {
+      font-family: var(--font-label);
+      font-size: 0.74rem;
+      font-weight: 600;
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      border: 1px solid var(--outline-variant);
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--badge-radius);
+    }
+
+    .manifesto-quote {
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: var(--space-xl);
+      border-radius: var(--rounded-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      border-bottom: 4px solid var(--primary-container);
+    }
+
+    .manifesto-quote blockquote {
+      margin: 0;
+      font-family: var(--font-headline);
+      font-size: clamp(1.2rem, 1rem + 0.7vw, 1.55rem);
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    /* Interactive Tabs / Pills */
+    .tab-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      border-bottom: var(--card-border);
+      padding-bottom: var(--space-sm);
+    }
+
+    .tab-btn {
+      min-height: 44px;
+      padding: 0.45rem 0.9rem;
+      background: var(--surface-container);
+      color: var(--on-surface-variant);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  color var(--dur-micro) var(--ease-out),
+                  border-color var(--dur-micro) var(--ease-out);
+    }
+
+    .tab-btn:hover {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+
+    .tab-btn.is-selected {
+      background: var(--secondary);
+      color: var(--on-primary);
+      border-color: var(--secondary);
+    }
+
+    /* Comparison Table */
+    .data-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      background: var(--surface-container-low);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.925rem;
+    }
+
+    .data-table th {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--surface-container);
+      color: var(--on-surface);
+      padding: 0.75rem 1rem;
+      border-bottom: var(--section-rule);
+    }
+
+    .data-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: var(--card-border);
+      vertical-align: top;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    /* Code Block with Copy Button */
+    .code-card {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border: 1px solid var(--code-border);
+      border-radius: var(--rounded-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-toolbar {
+      background: var(--code-header);
+      padding: 0.5rem 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      border-bottom: 1px solid var(--code-border);
+    }
+
+    .code-lang {
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      color: var(--code-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .copy-btn {
+      min-height: 36px;
+      padding: 0.25rem 0.65rem;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border: 1px solid var(--code-border);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  border-color var(--dur-micro) var(--ease-out);
+    }
+    .copy-btn:hover { background: var(--secondary); border-color: var(--secondary); }
+    .copy-btn.is-copied { background: var(--positive); border-color: var(--positive); }
+
+    .code-pre {
+      margin: 0;
+      padding: var(--space-md) var(--space-lg);
+      font-family: var(--font-label);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre;
+      tab-size: 4;
+    }
+
+    .tok-kw { color: var(--code-kw); font-weight: 500; }
+    .tok-str { color: var(--code-str); }
+    .tok-fn { color: var(--code-fn); }
+    .tok-num { color: var(--code-num); }
+    .tok-com { color: var(--code-muted); font-style: italic; }
+
+    /* Colab Interactive Mock */
+    .colab-cell {
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .colab-cell--active {
+      border-left: 4px solid var(--secondary);
+    }
+
+    .colab-output {
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      padding: 0.75rem 1rem;
+      font-family: var(--font-label);
+      font-size: 0.82rem;
+      color: var(--on-surface);
+      white-space: pre-wrap;
+    }
+
+    /* Likert Interactive Cards */
+    .likert-scale-bar {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--space-xs);
+    }
+
+    .likert-pill {
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      padding: var(--space-sm);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .likert-num {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .likert-interactive-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+    }
+
+    .likert-choices {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+
+    .likert-choice-btn {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0.25rem 0.65rem;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  color var(--dur-micro) var(--ease-out);
+    }
+
+    .likert-choice-btn:hover { background: var(--surface-container); }
+    .likert-choice-btn.is-active {
+      background: var(--secondary);
+      color: var(--on-primary);
+      border-color: var(--secondary);
+    }
+
+    /* Step-by-Step Practical Guide (Slide 7) */
+    .practice-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+
+    .practice-step-card {
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .practice-step-card--accent {
+      border-top: 3px solid var(--secondary);
+    }
+
+    .practice-step-card--gold {
+      border-top: 3px solid var(--primary-container);
+    }
+
+    .practice-step-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .practice-sublist {
+      margin: 0;
+      padding-left: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.89rem;
+      color: var(--on-surface);
+    }
+
+    /* QR & Assignment Card (Slide 8) */
+    .qr-box {
+      background: var(--surface-container-low);
+      border: 2px solid var(--outline);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.65rem;
+    }
+
+    .qr-svg-wrap {
+      background: #ffffff;
+      padding: 0.65rem;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-link-box {
+      width: 100%;
+      background: var(--surface-container);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      padding: 0.45rem 0.65rem;
+      font-family: var(--font-label);
+      font-size: 0.78rem;
+      color: var(--secondary);
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+    }
+
+    .bedah-stage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .bedah-stage-item {
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      padding: 0.65rem 0.9rem;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: start;
+    }
+
+
+    .bagian-b-toggle-panel {
+      display: none;
+      margin-top: 0.65rem;
+    }
+    .bagian-b-toggle-panel.is-open {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* Checklist (Slide 8) */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: 0.65rem 0.9rem;
+      min-height: 44px;
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      color: var(--on-surface);
+      font-size: 0.925rem;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  border-color var(--dur-micro) var(--ease-out);
+    }
+    .check-item:hover { background: var(--surface-container); }
+    .check-item.is-checked {
+      background: var(--positive-bg);
+      border-color: var(--positive);
+    }
+    .check-box {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      border: 2px solid var(--outline);
+      border-radius: var(--badge-radius);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-container-low);
+      color: var(--on-primary);
+    }
+    .check-item.is-checked .check-box {
+      background: var(--positive);
+      border-color: var(--positive);
+    }
+
+    /* Form Inputs (Slide 9) */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .field-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      color: var(--on-surface);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .field-input {
+      min-height: 44px;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded);
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      font-size: 0.95rem;
+    }
+    .field-input:focus {
+      border-color: var(--secondary);
+      outline: 2px solid var(--secondary-soft);
+    }
+
+    .filename-preview {
+      font-family: var(--font-label);
+      font-size: 0.9rem;
+      padding: 0.65rem 0.9rem;
+      background: var(--code-bg);
+      color: var(--code-str);
+      border-radius: var(--rounded);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      word-break: break-all;
+    }
+
+    /* Bottom Navigation Bar */
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      padding-top: var(--space-sm);
+      border-top: var(--card-border);
+      flex-wrap: wrap;
+    }
+
+    .slide-dots {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .dot-btn {
+      min-width: 34px;
+      min-height: 36px;
+      padding: 0 0.45rem;
+      border-radius: var(--rounded);
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-low);
+      color: var(--on-surface-variant);
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  color var(--dur-micro) var(--ease-out),
+                  border-color var(--dur-micro) var(--ease-out);
+    }
+    .dot-btn:hover { background: var(--surface-container); color: var(--on-surface); }
+    .dot-btn.is-current {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .kbd-hint {
+      font-family: var(--font-label);
+      font-size: 0.72rem;
+      color: var(--on-surface-variant);
+      text-align: center;
+      width: 100%;
+    }
+
+    /* Slide Overview Drawer */
+    .index-drawer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--backdrop);
+      z-index: 50;
+      padding: var(--space-lg);
+      align-items: center;
+      justify-content: center;
+    }
+    .index-drawer.is-open { display: flex; }
+
+    .index-panel {
+      background: var(--surface-container-low);
+      border: 2px solid var(--outline);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--shadow-overlay);
+      max-width: 920px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+      gap: var(--space-sm);
+    }
+
+    .index-card {
+      text-align: left;
+      background: var(--background);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      min-height: 44px;
+      color: var(--on-surface);
+    }
+    .index-card:hover { background: var(--surface-container); border-color: var(--outline); }
+    .index-card.is-current {
+      border: 2px solid var(--secondary);
+      background: var(--secondary-soft);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 860px) {
+      .grid-2, .grid-asym, .grid-asym-rev, .speaker-layout, .cv-grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .speaker-photo-frame {
+        max-width: 280px;
+        margin: 0 auto;
+      }
+      .likert-scale-bar {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .deck-shell { padding: var(--space-sm); }
+      .slide { padding: var(--space-md); }
+      .slide-dots { display: none; }
+      .kbd-hint { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-shell" id="deck-root">
+    <!-- Top Utility Bar -->
+    <div class="deck-topbar">
+      <div class="brand-cluster">
+        <span class="dossier-pill">SKILLNOMICS 2026</span>
+        <span class="dossier-meta">HIMAPROMI · UNIVERSITAS NURUL JADID · PERTEMUAN 01</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="slide-counter-badge" id="slide-counter" aria-live="polite">01 / 10</span>
+        <button type="button" class="btn btn-secondary" onclick="toggleOverview(true)" aria-label="Buka Daftar Isi Slide">
+          <i data-lucide="layout-grid" aria-hidden="true" style="width:16px;height:16px;"></i>
+          <span>Daftar Slide</span>
+        </button>
+        <button type="button" class="btn btn-secondary" id="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Mode Layar Penuh">
+          <i data-lucide="maximize-2" aria-hidden="true" style="width:16px;height:16px;"></i>
+          <span id="fullscreen-label">Layar Penuh</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1" id="deck-progressbar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <!-- Main Slide Stage -->
+    <main class="slide-stage" id="slide-stage">
+
+      <!-- SLIDE 1: CURRICULUM VITAE & REKAM JEJAK PEMATERI -->
+      <section class="slide is-active" data-slide="1" data-title="Profil &amp; CV Pemateri: Moh. Ghazy A. Alghifari" aria-label="Slide 1: Profil dan Rekam Jejak Pemateri">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">CURRICULUM VITAE · PEMATERI</span>
+            <span class="dossier-meta">SKILLNOMICS 2026 · PORTOFOLIO SISTEM &amp; REKAM JEJAK NASIONAL</span>
+          </div>
+          <span class="slide-index-label">SLIDE 01 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h1 class="slide-title">Moh. Ghazy A. Alghifari</h1>
+          <p class="standfirst">Web Developer Sistem Perhitungan Keuangan, Praktisi Data, &amp; Google Student Ambassador</p>
+        </div>
+
+        <div class="speaker-layout">
+          <!-- Kolom Kiri: Foto Pemateri (ghazy.png) & Ringkasan CV -->
+          <div class="speaker-profile-card">
+            <div class="speaker-photo-frame" id="ghazy-photo-frame">
+              <img src="img/ghazy.jpg" alt="Foto Moh. Ghazy A. Alghifari" onerror="this.parentElement.classList.add('is-missing')">
+              <div class="speaker-photo-fallback">
+                <i data-lucide="user-check" aria-hidden="true" style="width:42px;height:42px;color:var(--primary-container);"></i>
+                <strong style="font-size:0.95rem;">Moh. Ghazy A. Alghifari</strong>
+                <span style="font-family:var(--font-label);font-size:0.75rem;opacity:0.8;">File foto: ghazy.jpg</span>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:0.55rem;">
+              <span class="dossier-pill" style="width:fit-content;">RINGKASAN PROFIL</span>
+              <p style="margin:0; font-size:0.88rem; line-height:1.5; color:var(--on-primary); opacity:0.92;">
+                Pengembang aplikasi berbasis perhitungan keuangan dan pengolahan data yang aktif di ekosistem teknologi Google serta kompetisi pengembangan solusi digital tingkat nasional.
+              </p>
+              <div class="speaker-tags">
+                <span class="speaker-tag">Google Student Ambassador</span>
+                <span class="speaker-tag">Hackathon Nasional</span>
+                <span class="speaker-tag">Founder UTC Community</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kolom Kanan: Isi Lengkap Seperti CV -->
+          <div class="cv-sections-wrap">
+            <!-- Bagian 1: Pengalaman Proyek Utama -->
+            <div class="cv-block cv-block--featured">
+              <div class="cv-block-header">
+                <span class="cv-block-title">
+                  <i data-lucide="briefcase" aria-hidden="true" style="width:15px;height:15px;"></i>
+                  <span>PENGALAMAN PROYEK &amp; PENGEMBANGAN SISTEM</span>
+                </span>
+                <span class="dossier-pill dossier-pill--teal">PORTOFOLIO UTAMA</span>
+              </div>
+              <ul class="cv-list">
+                <li>
+                  <strong>Lead Developer Website “siKodi” — Koperasi Simpan Pinjam:</strong> Merancang, membangun, dan menyelesaikan sistem aplikasi web untuk Koperasi Simpan Pinjam (KSP) PT. Multimayaka di Surabaya yang menangani <strong>perhitungan otomatis</strong> simpanan, pinjaman, bunga, angsuran, hingga pembukuan laporan keuangan anggota.
+                </li>
+                <li>
+                  <strong>Pengembang Website Berbasis Perhitungan &amp; Manajemen Data:</strong> Menyelesaikan berbagai proyek website lain yang berfokus pada otomatisasi rumus hitung, rekapitulasi data transaksi, serta sistem informasi terpadu agar pekerjaan manual menjadi cepat dan akurat.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Bagian 2: Rekam Jejak, Prestasi & Keahlian (2 Kolom) -->
+            <div class="cv-grid-2">
+              <div class="cv-block cv-block--gold">
+                <div class="cv-block-header">
+                  <span class="cv-block-title">
+                    <i data-lucide="award" aria-hidden="true" style="width:15px;height:15px;"></i>
+                    <span>REKAM JEJAK &amp; PENCAPAIAN</span>
+                  </span>
+                </div>
+                <ul class="cv-list">
+                  <li>
+                    <strong>Google Student Ambassador:</strong> Terpilih menjadi bagian dari program duta mahasiswa Google untuk mendorong pemanfaatan teknologi, AI, dan alat kolaborasi digital di kalangan mahasiswa.
+                  </li>
+                  <li>
+                    <strong>Kompetisi Hackathon Tingkat Nasional:</strong> Berpengalaman terjun dalam ajang <em>Hackathon</em> berskala nasional, merancang prototipe solusi berbasis data dan teknologi dalam tenggat waktu ketat.
+                  </li>
+                  <li>
+                    <strong>Founder Unuja Tech Center Community:</strong> Mendirikan sebuah komunitas teknologi di lingkungan Universitas Nurul Jadid.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="cv-block">
+                <div class="cv-block-header">
+                  <span class="cv-block-title">
+                    <i data-lucide="cpu" aria-hidden="true" style="width:15px;height:15px;"></i>
+                    <span>KOMPETENSI INTI</span>
+                  </span>
+                </div>
+                <div class="cv-badge-row">
+                  <span class="cv-skill-chip">Python &amp; Google Colab</span>
+                  <span class="cv-skill-chip">Full-Stack Web Dev</span>
+                  <span class="cv-skill-chip">Public Speaker</span>
+                  <span class="cv-skill-chip">Problem Solver</span>
+                </div>
+                <p class="muted" style="margin:0.35rem 0 0; font-size:0.87rem; line-height:1.5;">
+                  <strong>Fokus Kelas Hari Ini:</strong> Mengubah kerumitan olah data skripsi menjadi langkah-langkah logis yang bisa langsung dipraktikkan siapa saja tanpa perlu jago coding lebih dulu.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: MENGAPA MAHASISWA EKONOMI BUTUH PYTHON -->
+      <section class="slide" data-slide="2" data-title="Mengapa Mahasiswa Ekonomi Butuh Python?" aria-label="Slide 2: Mengapa Mahasiswa Ekonomi Butuh Python">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">ALASAN PENTING</span>
+            <span class="dossier-meta">UNTUK SKRIPSI &amp; DUNIA KERJA</span>
+          </div>
+          <span class="slide-index-label">SLIDE 02 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Kenapa Mahasiswa Ekonomi Perlu Belajar Python?</h2>
+          <p class="standfirst">Biar olah data skripsi tidak pusing karena aplikasi berbayar, tidak mengulang kerjaan dari nol, dan punya nilai tambah saat melamar kerja.</p>
+        </div>
+
+        <div class="card-grid">
+          <div class="figure-card figure-card--accent">
+            <span class="index-num">01</span>
+            <strong style="margin-top:0.25rem;">100% Gratis &amp; Legal</strong>
+            <p class="muted" style="margin:0;">Aplikasi statistik lain sering mahal lisensinya atau ribet instalasinya. Python gratis selamanya dan resmi dipakai di kampus maupun perusahaan besar.</p>
+          </div>
+          <div class="figure-card figure-card--gold">
+            <span class="index-num">02</span>
+            <strong style="margin-top:0.25rem;">Data Revisi? Tinggal Klik Ulang!</strong>
+            <p class="muted" style="margin:0;">Kalau dosen minta tambah responden atau buang kuesioner yang tidak valid, tidak perlu ulang klik menu dari awal—cukup ganti file Excel lalu klik <em>Run All</em>.</p>
+          </div>
+          <div class="figure-card figure-card--accent">
+            <span class="index-num">03</span>
+            <strong style="margin-top:0.25rem;">Skill Dicari Perusahaan</strong>
+            <p class="muted" style="margin:0;">Bank, lembaga riset, dan startup sekarang mencari lulusan ekonomi yang paham cara mengolah data pakai Python, bukan cuma bisa ketik tabel biasa.</p>
+          </div>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Hal yang Dibandingkan</th>
+                <th>Aplikasi Statistik Klik-Menu</th>
+                <th>Python + Google Colab</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Biaya &amp; Instalasi</strong></td>
+                <td>Berbayar mahal; harus instal di laptop</td>
+                <td><strong>Gratis 100%</strong>; cukup buka browser internet</td>
+              </tr>
+              <tr>
+                <td><strong>Kalau Data Kuesioner Direvisi</strong></td>
+                <td>Harus mengulang puluhan langkah klik dari awal</td>
+                <td><strong>Otomatis</strong> — ganti file data, jalankan ulang kodenya</td>
+              </tr>
+              <tr>
+                <td><strong>Catatan Langkah Kerja</strong></td>
+                <td>Susah dilacak kalau lupa tadi klik menu apa saja</td>
+                <td><strong>Tersimpan rapi</strong> berurutan dari atas ke bawah</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: PENGENALAN GOOGLE COLAB -->
+      <section class="slide" data-slide="3" data-title="Pengenalan Google Colab" aria-label="Slide 3: Pengenalan Google Colab">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">ALAT KERJA KITA</span>
+            <span class="dossier-meta">NGODING LEWAT BROWSER TANPA INSTAL APLIKASI</span>
+          </div>
+          <span class="slide-index-label">SLIDE 03 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Kenalan dengan Google Colab</h2>
+          <p class="standfirst">Anggap saja Google Colab itu seperti "Google Docs", tapi khusus untuk menulis catatan sekaligus menjalankan kode Python.</p>
+        </div>
+
+        <div class="grid-asym">
+          <div style="display:flex; flex-direction:column; gap:var(--space-md);">
+            <div class="colab-cell">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:var(--space-sm);">
+                <span class="dossier-pill dossier-pill--teal">1. SEL TEKS (CATATAN)</span>
+                <span class="figure-label">Untuk Judul &amp; Penjelasan</span>
+              </div>
+              <p class="prose" style="font-size:0.925rem;">Dipakai untuk menulis judul bab, catatan langkah penelitian, dan kesimpulan hasil hitung agar file terlihat rapi seperti laporan.</p>
+            </div>
+
+            <div class="colab-cell colab-cell--active">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:var(--space-sm); flex-wrap:wrap;">
+                <span class="dossier-pill">2. SEL KODE (PYTHON)</span>
+                <button type="button" class="btn btn-primary btn-sm" onclick="runColabDemo()">
+                  <i data-lucide="play" aria-hidden="true" style="width:14px;height:14px;"></i>
+                  <span>Coba Jalankan (Shift + Enter)</span>
+                </button>
+              </div>
+              <div class="code-card">
+                <pre class="code-pre"><code>responden = <span class="tok-num">120</span>
+<span class="tok-fn">print</span>(<span class="tok-str">"Selamat datang di SKILLNOMICS!"</span>, <span class="tok-str">"Target:"</span>, responden, <span class="tok-str">"peserta"</span>)</code></pre>
+              </div>
+              <div class="colab-output" id="colab-demo-output">Klik tombol "Coba Jalankan" di atas untuk melihat bagaimana Google Colab memproses kode.</div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--space-md);">
+            <div class="figure-card figure-card--white">
+              <span class="figure-label">Kenapa Enak Pakai Google Colab?</span>
+              <ul style="margin:0.35rem 0 0; padding-left:1.2rem; display:flex; flex-direction:column; gap:0.4rem;">
+                <li><strong>Laptop Ringan:</strong> Semua hitungan dikerjakan oleh server Google, bukan laptop Anda.</li>
+                <li><strong>Alat Sudah Lengkap:</strong> Paket olah data seperti <code>pandas</code> sudah langsung tersedia.</li>
+                <li><strong>Cara Jalankan Mudah:</strong> Cukup tekan <strong>Shift + Enter</strong> atau klik tombol <strong>Play (▶)</strong>.</li>
+              </ul>
+            </div>
+
+            <div class="callout-warning">
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem;">
+                <i data-lucide="alert-triangle" aria-hidden="true" style="width:18px;height:18px;color:var(--warning);"></i>
+                <strong>WAJIB DILAKUKAN: SAVE A COPY IN DRIVE</strong>
+              </div>
+              <p style="margin:0; font-size:0.9rem;">Sebelum mulai praktik di file template panitia, wajib klik menu <strong>File → Save a Copy in Drive</strong>. Kalau tidak disalin dulu, pekerjaan Anda tidak akan tersimpan di Google Drive pribadi.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: DASAR SINTAKS PYTHON UNTUK EKONOMI -->
+      <section class="slide" data-slide="4" data-title="Dasar Python untuk Olah Data" aria-label="Slide 4: Dasar Python untuk Olah Data">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">DASAR PYTHON</span>
+            <span class="dossier-meta">WADAH DATA · JENIS DATA · HITUNG SEDERHANA</span>
+          </div>
+          <span class="slide-index-label">SLIDE 04 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Dasar Python yang Sering Dipakai di Riset</h2>
+          <p class="standfirst">Klik tombol jenis data di bawah ini untuk melihat fungsi masing-masing saat mengolah kuesioner.</p>
+        </div>
+
+        <div class="grid-asym-rev">
+          <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
+            <div class="tab-group" role="tablist" aria-label="Pilih Tipe Data Python">
+              <button type="button" class="tab-btn is-selected" data-pytype="int" onclick="selectPyType('int', this)">Angka Bulat (int)</button>
+              <button type="button" class="tab-btn" data-pytype="float" onclick="selectPyType('float', this)">Desimal (float)</button>
+              <button type="button" class="tab-btn" data-pytype="str" onclick="selectPyType('str', this)">Teks (str)</button>
+              <button type="button" class="tab-btn" data-pytype="list" onclick="selectPyType('list', this)">Daftar (list)</button>
+            </div>
+
+            <div class="figure-card figure-card--accent" id="pytype-detail">
+              <span class="figure-label" id="pytype-badge">INTEGER (INT) · BILANGAN BULAT</span>
+              <strong id="pytype-title" style="font-size:1.1rem;">Untuk Jumlah Responden &amp; Skor Kuesioner</strong>
+              <p class="prose muted" id="pytype-desc">Dipakai untuk angka utuh tanpa koma, misalnya jumlah responden (<code>45</code> orang), umur, atau skor jawaban kuesioner dari <code>1</code> sampai <code>5</code>.</p>
+              <div class="aside-box" style="margin-top:var(--space-xs); padding:0.75rem 1rem;">
+                <span class="figure-label">Contoh Penulisan di Python:</span>
+                <div id="pytype-example" style="font-family:var(--font-label); font-size:0.85rem; margin-top:0.2rem;">jumlah_umkm = 45</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
+            <div class="code-card">
+              <div class="code-toolbar">
+                <span class="code-lang">
+                  <i data-lucide="terminal" aria-hidden="true" style="width:14px;height:14px;"></i>
+                  <span>python · dasar_kuesioner.py</span>
+                </span>
+                <button type="button" class="copy-btn" onclick="copyCode('code-slide-4', this)">
+                  <i data-lucide="copy" aria-hidden="true" style="width:13px;height:13px;"></i>
+                  <span>Salin Kode</span>
+                </button>
+              </div>
+              <pre class="code-pre" id="code-slide-4"><code><span class="tok-com"># 1. Menyimpan data ke dalam wadah (Variabel)</span>
+nama_variabel = <span class="tok-str">"Literasi_Keuangan"</span>   <span class="tok-com"># Teks (String)</span>
+jumlah_responden = <span class="tok-num">45</span>                 <span class="tok-com"># Angka bulat (Integer)</span>
+batas_valid = <span class="tok-num">0.70</span>                    <span class="tok-com"># Angka koma (Float)</span>
+
+<span class="tok-com"># 2. Daftar skor 5 pertanyaan dari 1 orang responden (List)</span>
+skor_x1 = [<span class="tok-num">4</span>, <span class="tok-num">5</span>, <span class="tok-num">4</span>, <span class="tok-num">3</span>, <span class="tok-num">5</span>]
+
+<span class="tok-com"># 3. Menghitung total dan rata-rata otomatis</span>
+total_skor = <span class="tok-fn">sum</span>(skor_x1)
+jumlah_soal = <span class="tok-fn">len</span>(skor_x1)
+rata_rata = total_skor / jumlah_soal
+
+<span class="tok-fn">print</span>(<span class="tok-str">f"Variabel: {nama_variabel}"</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">f"Total Skor: {total_skor} | Rata-rata: {rata_rata}"</span>)</code></pre>
+            </div>
+            <div class="colab-output">Hasil di Layar:
+Variabel: Literasi_Keuangan
+Total Skor: 21 | Rata-rata: 4.2</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: KUANTIFIKASI SKALA LIKERT -->
+      <section class="slide" data-slide="5" data-title="Mengubah Jawaban Kuesioner ke Angka (Skala Likert)" aria-label="Slide 5: Skala Likert">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">SKORING KUESIONER</span>
+            <span class="dossier-meta">SKALA LIKERT 1–5 · DARI TEKS JADI ANGKA</span>
+          </div>
+          <span class="slide-index-label">SLIDE 05 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Mengubah Jawaban Kuesioner Jadi Angka (Skala Likert)</h2>
+          <p class="standfirst">Komputer tidak bisa menghitung kata "Setuju" atau "Sangat Setuju". Karena itu, jawaban responden diubah dulu menjadi skor 1 sampai 5.</p>
+        </div>
+
+        <div class="likert-scale-bar" aria-label="Skala Likert 1 hingga 5">
+          <div class="likert-pill">
+            <span class="likert-num">1</span>
+            <strong>STS</strong>
+            <span class="muted" style="font-size:0.78rem;">Sangat Tidak Setuju</span>
+          </div>
+          <div class="likert-pill">
+            <span class="likert-num">2</span>
+            <strong>TS</strong>
+            <span class="muted" style="font-size:0.78rem;">Tidak Setuju</span>
+          </div>
+          <div class="likert-pill">
+            <span class="likert-num">3</span>
+            <strong>N</strong>
+            <span class="muted" style="font-size:0.78rem;">Netral</span>
+          </div>
+          <div class="likert-pill">
+            <span class="likert-num">4</span>
+            <strong>S</strong>
+            <span class="muted" style="font-size:0.78rem;">Setuju</span>
+          </div>
+          <div class="likert-pill">
+            <span class="likert-num">5</span>
+            <strong>SS</strong>
+            <span class="muted" style="font-size:0.78rem;">Sangat Setuju</span>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="likert-interactive-row">
+            <span class="figure-label" style="color: var(--secondary);">COBA SIMULASI JAWABAN RESPONDEN (SILAKAN KLIK)</span>
+            <div>
+              <div style="font-size:0.875rem; font-weight:600; margin-bottom:0.3rem;">Soal X1.1: Saya mencatat pemasukan &amp; pengeluaran usaha tiap hari</div>
+              <div class="likert-choices" id="likert-q1">
+                <button type="button" class="likert-choice-btn" onclick="setLikert(0, 1, 'STS', this)">STS (1)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(0, 2, 'TS', this)">TS (2)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(0, 3, 'N', this)">N (3)</button>
+                <button type="button" class="likert-choice-btn is-active" onclick="setLikert(0, 4, 'S', this)">S (4)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(0, 5, 'SS', this)">SS (5)</button>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:0.875rem; font-weight:600; margin-bottom:0.3rem;">Soal X1.2: Saya memisahkan uang pribadi dengan modal usaha</div>
+              <div class="likert-choices" id="likert-q2">
+                <button type="button" class="likert-choice-btn" onclick="setLikert(1, 1, 'STS', this)">STS (1)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(1, 2, 'TS', this)">TS (2)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(1, 3, 'N', this)">N (3)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(1, 4, 'S', this)">S (4)</button>
+                <button type="button" class="likert-choice-btn is-active" onclick="setLikert(1, 5, 'SS', this)">SS (5)</button>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:0.875rem; font-weight:600; margin-bottom:0.3rem;">Soal X1.3: Saya menghitung keuntungan bersih setiap bulan</div>
+              <div class="likert-choices" id="likert-q3">
+                <button type="button" class="likert-choice-btn" onclick="setLikert(2, 1, 'STS', this)">STS (1)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(2, 2, 'TS', this)">TS (2)</button>
+                <button type="button" class="likert-choice-btn is-active" onclick="setLikert(2, 3, 'N', this)">N (3)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(2, 4, 'S', this)">S (4)</button>
+                <button type="button" class="likert-choice-btn" onclick="setLikert(2, 5, 'SS', this)">SS (5)</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
+            <div class="code-card">
+              <div class="code-toolbar">
+                <span class="code-lang">python · konversi_likert.py</span>
+                <button type="button" class="copy-btn" onclick="copyCode('code-slide-5', this)">
+                  <i data-lucide="copy" aria-hidden="true" style="width:13px;height:13px;"></i>
+                  <span>Salin Kode</span>
+                </button>
+              </div>
+              <pre class="code-pre" id="code-slide-5"><code><span class="tok-com"># Kamus perubahan teks ke angka</span>
+peta_likert = {
+    <span class="tok-str">"STS"</span>: <span class="tok-num">1</span>, <span class="tok-str">"TS"</span>: <span class="tok-num">2</span>, <span class="tok-str">"N"</span>: <span class="tok-num">3</span>, <span class="tok-str">"S"</span>: <span class="tok-num">4</span>, <span class="tok-str">"SS"</span>: <span class="tok-num">5</span>
+}
+
+jawaban_teks = [<span class="tok-str">"S"</span>, <span class="tok-str">"SS"</span>, <span class="tok-str">"N"</span>]
+skor_numerik = [peta_likert[j] <span class="tok-kw">for</span> j <span class="tok-kw">in</span> jawaban_teks]
+
+<span class="tok-fn">print</span>(<span class="tok-str">"Skor:"</span>, skor_numerik, <span class="tok-str">"| Total:"</span>, <span class="tok-fn">sum</span>(skor_numerik))</code></pre>
+            </div>
+            <div class="colab-output" id="likert-live-output">Jawaban Teks: ['S', 'SS', 'N']
+Berubah Jadi Angka: [4, 5, 3]
+Total Skor Variabel X1: 12  |  Rata-rata: 4.00</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: HANDS-ON PANDAS (KODE & SIMULASI OUTPUT) -->
+      <section class="slide" data-slide="6" data-title="Mengenal Pandas: Membuka File Excel Kuesioner" aria-label="Slide 6: Mengenal Pandas">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">ALAT OLAH TABEL</span>
+            <span class="dossier-meta">LIBRARY PANDAS · BUKA EXCEL · CEK ISI TABEL</span>
+          </div>
+          <span class="slide-index-label">SLIDE 06 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Mengenal Pandas: Membuka &amp; Mengecek File Excel</h2>
+          <p class="standfirst"><code>Pandas</code> adalah alat utama di Python untuk membuka file Excel kuesioner dan mengecek apakah datanya sudah masuk dengan benar.</p>
+        </div>
+
+        <div class="grid-asym">
+          <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
+            <div class="code-card">
+              <div class="code-toolbar">
+                <span class="code-lang">python · input_pandas.py</span>
+                <button type="button" class="copy-btn" onclick="copyCode('code-slide-6', this)">
+                  <i data-lucide="copy" aria-hidden="true" style="width:13px;height:13px;"></i>
+                  <span>Salin Kode</span>
+                </button>
+              </div>
+              <pre class="code-pre" id="code-slide-6"><code><span class="tok-com"># 1. Panggil alat pengolah tabel (pandas)</span>
+<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
+
+<span class="tok-com"># 2. Upload file Excel dari laptop ke Google Colab</span>
+<span class="tok-kw">from</span> google.colab <span class="tok-kw">import</span> files
+uploaded = files.upload()
+
+<span class="tok-com"># 3. Buka file Excel (tambah header=1 jika baris 1 judul merge)</span>
+df = pd.<span class="tok-fn">read_excel</span>(<span class="tok-str">'data_kuesioner_umkm.xlsx'</span>, header=<span class="tok-num">1</span>)
+<span class="tok-com"># Jika file bertipe CSV (untuk latihan praktik):</span>
+<span class="tok-com"># df = pd.read_csv('data_survei_ewallet_mahasiswa.csv')</span>
+
+<span class="tok-com"># 4. Periksa isi tabel data</span>
+df.<span class="tok-fn">head</span>()      <span class="tok-com"># Intip 5 baris paling atas</span>
+df.shape       <span class="tok-com"># Cek jumlah (baris, kolom)</span>
+df.columns     <span class="tok-com"># Lihat semua nama kolom</span>
+df.<span class="tok-fn">info</span>()      <span class="tok-com"># Cek apakah ada data yang kosong</span></code></pre>
+            </div>
+            <p class="muted" style="margin:0;">Cara alternatif upload: klik ikon <strong>Folder</strong> di panel kiri Google Colab, lalu klik tombol <strong>Upload</strong>.</p>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
+            <span class="figure-label">KLIK PERINTAH DI BAWAH UNTUK MELIHAT HASILNYA:</span>
+            <div class="tab-group" role="tablist" aria-label="Pilih Output Inspeksi Pandas">
+              <button type="button" class="tab-btn is-selected" onclick="selectPandasView('head', this)">.head()</button>
+              <button type="button" class="tab-btn" onclick="selectPandasView('shape', this)">.shape</button>
+              <button type="button" class="tab-btn" onclick="selectPandasView('columns', this)">.columns</button>
+              <button type="button" class="tab-btn" onclick="selectPandasView('info', this)">.info()</button>
+            </div>
+
+            <div class="figure-card figure-card--white" id="pandas-explain-card">
+              <strong id="pandas-method-title" style="color: var(--secondary);">df.head() — Mengintip 5 Responden Pertama</strong>
+              <p class="muted" id="pandas-method-desc" style="margin:0;">Untuk memastikan judul kolom berada di baris paling atas dan angka skor tidak berantakan.</p>
+              <div class="colab-output" id="pandas-output-box" style="margin-top:0.5rem; overflow-x:auto;">   ID_Resp  Jenis_Usaha  X1_1  X1_2  X1_3  Y_1  Y_2
+0     R001      Kuliner     4     5     4    5    4
+1     R002      Fashion     5     4     5    4    5
+2     R003         Jasa     3     4     3    4    3
+3     R004     Agribisnis   4     4     5    5    4
+4     R005      Kuliner     5     5     4    5    5</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: PANDUAN PRAKTIK LANGKAH DEMI LANGKAH (RINCI & JELAS) -->
+      <section class="slide" data-slide="7" data-title="Panduan Praktik Langsung (Langkah demi Langkah)" aria-label="Slide 7: Panduan Praktik Langsung Rinci">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">SESI PRAKTIK · STEP-BY-STEP</span>
+            <span class="dossier-meta">PANDUAN RINCI DARI BUKA COLAB SAMPAI BACA DATA</span>
+          </div>
+          <span class="slide-index-label">SLIDE 07 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Panduan Praktik Langsung: Langkah demi Langkah</h2>
+          <p class="standfirst">Ikuti urutan 4 tahap di bawah ini di laptop masing-masing. Pastikan setiap tahap berhasil sebelum lanjut ke tahap berikutnya.</p>
+        </div>
+
+        <div class="practice-steps-grid">
+          <!-- Tahap 1 -->
+          <div class="practice-step-card practice-step-card--accent">
+            <div class="practice-step-head">
+              <span class="index-num">TAHAP 01 · PERSIAPAN</span>
+              <span class="figure-label">Google Colab</span>
+            </div>
+            <strong>Siapkan Ruang Kerja Pribadi</strong>
+            <ol class="practice-sublist">
+              <li>Buka link <strong>Template Notebook Panitia</strong> yang dibagikan di grup.</li>
+              <li>Klik menu <strong>File</strong> (pojok kiri atas) → pilih <strong>Save a copy in Drive</strong>.</li>
+              <li>Tunggu tab baru terbuka bertuliskan <em>"Copy of..."</em>, lalu ganti judulnya menjadi <strong>NamaAnda_Pertemuan1</strong>.</li>
+              <li>Klik tombol <strong>Connect</strong> di pojok kanan atas sampai muncul tanda centang hijau (RAM &amp; Disk).</li>
+            </ol>
+          </div>
+
+          <!-- Tahap 2 -->
+          <div class="practice-step-card practice-step-card--gold">
+            <div class="practice-step-head">
+              <span class="index-num">TAHAP 02 · UPLOAD FILE</span>
+              <span class="figure-label">Dataset Excel</span>
+            </div>
+            <strong>Masukkan File Kuesioner ke Colab</strong>
+            <ol class="practice-sublist">
+              <li>Download file bahan latihan (<code>data_kuesioner_umkm.xlsx</code>) ke folder <em>Downloads</em> laptop Anda.</li>
+              <li>Di Google Colab, klik ikon <strong>Folder (Files)</strong> di panel menu sebelah kiri.</li>
+              <li>Klik ikon <strong>Upload to session storage</strong> (kertas dengan panah ke atas).</li>
+              <li>Pilih file Excel tadi, klik <strong>Open</strong>, dan pastikan nama filenya muncul di daftar panel kiri.</li>
+            </ol>
+          </div>
+
+          <!-- Tahap 3 -->
+          <div class="practice-step-card practice-step-card--accent">
+            <div class="practice-step-head">
+              <span class="index-num">TAHAP 03 · EKSEKUSI KODE</span>
+              <span class="figure-label">Pandas Read</span>
+            </div>
+            <strong>Baca &amp; Tampilkan Isi Tabel Data</strong>
+            <ol class="practice-sublist">
+              <li>Klik sel kode pertama berisi <code>import pandas as pd</code>, lalu tekan <strong>Shift + Enter</strong>.</li>
+              <li>Jalankan sel kode <code>df = pd.read_excel('data_kuesioner_umkm.xlsx', header=1)</code> (gunakan <code>header=1</code> karena baris 1 berisi judul kelompok).</li>
+              <li>Jalankan <code>df.head(10)</code> untuk melihat 10 baris data responden pertama di layar.</li>
+              <li>Pastikan tidak ada tulisan error merah dan seluruh kolom pertanyaan tampil utuh.</li>
+            </ol>
+          </div>
+
+          <!-- Tahap 4 -->
+          <div class="practice-step-card practice-step-card--gold">
+            <div class="practice-step-head">
+              <span class="index-num">TAHAP 04 · AUDIT DATA</span>
+              <span class="figure-label">Cek Struktur</span>
+            </div>
+            <strong>Periksa Ukuran, Kolom &amp; Kelengkapan</strong>
+            <ol class="practice-sublist">
+              <li>Jalankan <code>df.shape</code> → catat berapa total responden (baris) dan jumlah kolomnya.</li>
+              <li>Jalankan <code>df.columns</code> → cek apakah ada nama kolom yang typo atau spasi berlebih.</li>
+              <li>Jalankan <code>df.info()</code> → pastikan kolom skor X dan Y terbaca sebagai angka (<code>int64</code>/<code>float64</code>).</li>
+              <li>Tambahkan <strong>1 Sel Teks (+ Text)</strong> di bagian bawah untuk menulis ringkasan temuan Anda.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="callout-positive" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--space-sm);">
+          <div>
+            <strong>Indikator Berhasil Praktik:</strong> Tabel responden muncul rapi, jumlah baris &amp; kolom terbaca jelas, dan tidak ada pesan error merah di bawah sel kode.
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="goToSlide(6)">Lihat Contoh Kode Pandas</button>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: PENUGASAN BAGIAN A, QR DOWNLOAD BAHAN & KERJAKAN BARENG BAGIAN B -->
+      <section class="slide" data-slide="8" data-title="Praktik Bagian A, QR Bahan &amp; Kerjakan Bareng Bagian B" aria-label="Slide 8: Penugasan Bagian A dan Kerjakan Bareng Bagian B">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">PRAKTIK MANDIRI &amp; BEDAH BARENG</span>
+            <span class="dossier-meta">DATASET CSV E-WALLET · BAGIAN A MANDIRI · BAGIAN B KERJAKAN BARENG</span>
+          </div>
+          <span class="slide-index-label">SLIDE 08 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Praktik Bagian A (Mandiri) &amp; Bagian B (Kerjakan Bareng)</h2>
+          <p class="standfirst">Unduh dataset baru <code>data_survei_ewallet_mahasiswa.csv</code> lewat QR di bawah, selesaikan <strong>Bagian A</strong> secara mandiri, lalu kita kerjakan <strong>Bagian B</strong> bareng-bareng di layar!</p>
+        </div>
+
+        <div class="grid-asym-rev">
+          <!-- Kolom Kiri: QR Code Download Bahan -->
+          <div class="qr-box">
+            <span class="dossier-pill" style="width:fit-content;">SCAN QR DOWNLOAD BAHAN</span>
+            <div class="qr-svg-wrap" aria-label="QR Code Download Dataset dan Soal SKILLNOMICS">
+              <!-- Crisp Vector QR Code (Verified) -> Google Drive Folder -->
+              <svg width="180" height="180" viewBox="0 0 41 41" shape-rendering="crispEdges" role="img" aria-label="QR Code Link Bahan SKILLNOMICS 2026">
+                <rect width="41" height="41" fill="#ffffff"/>
+                <path fill="#17181a" d="M2,2h7v1h-7zM12,2h1v1h-1zM14,2h4v1h-4zM22,2h1v1h-1zM25,2h3v1h-3zM30,2h1v1h-1zM32,2h7v1h-7zM2,3h1v1h-1zM8,3h1v1h-1zM10,3h1v1h-1zM12,3h1v1h-1zM15,3h4v1h-4zM23,3h2v1h-2zM26,3h4v1h-4zM32,3h1v1h-1zM38,3h1v1h-1zM2,4h1v1h-1zM4,4h3v1h-3zM8,4h1v1h-1zM14,4h2v1h-2zM17,4h1v1h-1zM20,4h1v1h-1zM22,4h3v1h-3zM26,4h1v1h-1zM28,4h1v1h-1zM30,4h1v1h-1zM32,4h1v1h-1zM34,4h3v1h-3zM38,4h1v1h-1zM2,5h1v1h-1zM4,5h3v1h-3zM8,5h1v1h-1zM10,5h3v1h-3zM14,5h1v1h-1zM16,5h2v1h-2zM23,5h7v1h-7zM32,5h1v1h-1zM34,5h3v1h-3zM38,5h1v1h-1zM2,6h1v1h-1zM4,6h3v1h-3zM8,6h1v1h-1zM11,6h1v1h-1zM17,6h3v1h-3zM22,6h2v1h-2zM25,6h1v1h-1zM27,6h1v1h-1zM30,6h1v1h-1zM32,6h1v1h-1zM34,6h3v1h-3zM38,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM10,7h2v1h-2zM13,7h2v1h-2zM20,7h1v1h-1zM24,7h1v1h-1zM28,7h3v1h-3zM32,7h1v1h-1zM38,7h1v1h-1zM2,8h7v1h-7zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h1v1h-1zM30,8h1v1h-1zM32,8h7v1h-7zM11,9h3v1h-3zM16,9h1v1h-1zM18,9h1v1h-1zM22,9h2v1h-2zM25,9h2v1h-2zM30,9h1v1h-1zM2,10h5v1h-5zM8,10h4v1h-4zM13,10h1v1h-1zM19,10h1v1h-1zM22,10h1v1h-1zM25,10h4v1h-4zM31,10h1v1h-1zM33,10h1v1h-1zM35,10h1v1h-1zM37,10h1v1h-1zM2,11h1v1h-1zM7,11h1v1h-1zM9,11h1v1h-1zM11,11h2v1h-2zM14,11h4v1h-4zM20,11h1v1h-1zM22,11h3v1h-3zM33,11h1v1h-1zM35,11h3v1h-3zM2,12h2v1h-2zM5,12h2v1h-2zM8,12h3v1h-3zM15,12h5v1h-5zM22,12h3v1h-3zM28,12h4v1h-4zM33,12h4v1h-4zM38,12h1v1h-1zM2,13h4v1h-4zM10,13h3v1h-3zM14,13h2v1h-2zM18,13h1v1h-1zM20,13h1v1h-1zM23,13h3v1h-3zM29,13h2v1h-2zM32,13h2v1h-2zM35,13h1v1h-1zM37,13h1v1h-1zM4,14h1v1h-1zM8,14h1v1h-1zM10,14h2v1h-2zM14,14h1v1h-1zM16,14h2v1h-2zM21,14h4v1h-4zM26,14h4v1h-4zM31,14h2v1h-2zM34,14h3v1h-3zM38,14h1v1h-1zM2,15h2v1h-2zM5,15h1v1h-1zM9,15h4v1h-4zM18,15h1v1h-1zM22,15h2v1h-2zM25,15h1v1h-1zM30,15h1v1h-1zM33,15h1v1h-1zM36,15h2v1h-2zM4,16h2v1h-2zM7,16h3v1h-3zM11,16h4v1h-4zM17,16h1v1h-1zM19,16h1v1h-1zM22,16h2v1h-2zM28,16h2v1h-2zM31,16h4v1h-4zM36,16h3v1h-3zM3,17h1v1h-1zM7,17h1v1h-1zM9,17h2v1h-2zM12,17h2v1h-2zM16,17h1v1h-1zM18,17h1v1h-1zM22,17h3v1h-3zM26,17h1v1h-1zM28,17h1v1h-1zM30,17h6v1h-6zM38,17h1v1h-1zM2,18h1v1h-1zM4,18h1v1h-1zM6,18h1v1h-1zM8,18h1v1h-1zM10,18h1v1h-1zM12,18h2v1h-2zM19,18h3v1h-3zM23,18h3v1h-3zM27,18h4v1h-4zM32,18h1v1h-1zM34,18h3v1h-3zM38,18h1v1h-1zM3,19h5v1h-5zM14,19h3v1h-3zM18,19h2v1h-2zM22,19h5v1h-5zM28,19h1v1h-1zM30,19h1v1h-1zM33,19h1v1h-1zM36,19h2v1h-2zM2,20h1v1h-1zM8,20h1v1h-1zM10,20h2v1h-2zM15,20h5v1h-5zM22,20h3v1h-3zM26,20h2v1h-2zM29,20h3v1h-3zM33,20h2v1h-2zM36,20h3v1h-3zM3,21h1v1h-1zM10,21h1v1h-1zM12,21h1v1h-1zM14,21h2v1h-2zM17,21h1v1h-1zM21,21h1v1h-1zM23,21h1v1h-1zM25,21h1v1h-1zM29,21h1v1h-1zM33,21h2v1h-2zM38,21h1v1h-1zM4,22h1v1h-1zM6,22h7v1h-7zM14,22h1v1h-1zM16,22h1v1h-1zM19,22h1v1h-1zM22,22h7v1h-7zM31,22h2v1h-2zM34,22h5v1h-5zM2,23h1v1h-1zM4,23h2v1h-2zM7,23h1v1h-1zM12,23h1v1h-1zM18,23h1v1h-1zM21,23h1v1h-1zM23,23h3v1h-3zM28,23h1v1h-1zM30,23h1v1h-1zM33,23h1v1h-1zM37,23h1v1h-1zM3,24h2v1h-2zM7,24h4v1h-4zM12,24h3v1h-3zM17,24h1v1h-1zM22,24h2v1h-2zM27,24h1v1h-1zM29,24h1v1h-1zM32,24h4v1h-4zM37,24h2v1h-2zM5,25h1v1h-1zM9,25h1v1h-1zM11,25h3v1h-3zM16,25h1v1h-1zM22,25h2v1h-2zM25,25h1v1h-1zM28,25h1v1h-1zM31,25h1v1h-1zM33,25h1v1h-1zM38,25h1v1h-1zM2,26h5v1h-5zM8,26h2v1h-2zM12,26h2v1h-2zM17,26h3v1h-3zM27,26h1v1h-1zM29,26h4v1h-4zM34,26h1v1h-1zM36,26h3v1h-3zM2,27h3v1h-3zM6,27h2v1h-2zM9,27h1v1h-1zM11,27h1v1h-1zM14,27h3v1h-3zM18,27h1v1h-1zM21,27h2v1h-2zM24,27h1v1h-1zM27,27h1v1h-1zM30,27h1v1h-1zM33,27h1v1h-1zM35,27h1v1h-1zM37,27h1v1h-1zM2,28h1v1h-1zM7,28h6v1h-6zM15,28h6v1h-6zM23,28h1v1h-1zM27,28h3v1h-3zM31,28h1v1h-1zM34,28h5v1h-5zM2,29h1v1h-1zM5,29h2v1h-2zM9,29h2v1h-2zM12,29h1v1h-1zM14,29h2v1h-2zM17,29h1v1h-1zM23,29h1v1h-1zM26,29h1v1h-1zM28,29h4v1h-4zM33,29h2v1h-2zM38,29h1v1h-1zM2,30h1v1h-1zM7,30h4v1h-4zM14,30h1v1h-1zM16,30h2v1h-2zM19,30h1v1h-1zM21,30h4v1h-4zM26,30h2v1h-2zM29,30h8v1h-8zM12,31h1v1h-1zM18,31h1v1h-1zM21,31h2v1h-2zM28,31h3v1h-3zM34,31h3v1h-3zM2,32h7v1h-7zM10,32h1v1h-1zM12,32h3v1h-3zM17,32h1v1h-1zM20,32h1v1h-1zM22,32h1v1h-1zM24,32h1v1h-1zM26,32h1v1h-1zM30,32h1v1h-1zM32,32h1v1h-1zM34,32h1v1h-1zM37,32h2v1h-2zM2,33h1v1h-1zM8,33h1v1h-1zM13,33h1v1h-1zM16,33h2v1h-2zM20,33h4v1h-4zM25,33h1v1h-1zM28,33h1v1h-1zM30,33h1v1h-1zM34,33h1v1h-1zM38,33h1v1h-1zM2,34h1v1h-1zM4,34h3v1h-3zM8,34h1v1h-1zM10,34h4v1h-4zM19,34h2v1h-2zM22,34h1v1h-1zM24,34h1v1h-1zM27,34h8v1h-8zM36,34h3v1h-3zM2,35h1v1h-1zM4,35h3v1h-3zM8,35h1v1h-1zM10,35h2v1h-2zM14,35h3v1h-3zM18,35h2v1h-2zM22,35h2v1h-2zM25,35h1v1h-1zM27,35h1v1h-1zM30,35h3v1h-3zM34,35h1v1h-1zM37,35h2v1h-2zM2,36h1v1h-1zM4,36h3v1h-3zM8,36h1v1h-1zM10,36h2v1h-2zM15,36h4v1h-4zM22,36h3v1h-3zM26,36h1v1h-1zM28,36h1v1h-1zM30,36h1v1h-1zM35,36h4v1h-4zM2,37h1v1h-1zM8,37h1v1h-1zM10,37h1v1h-1zM14,37h2v1h-2zM23,37h1v1h-1zM25,37h2v1h-2zM28,37h4v1h-4zM33,37h1v1h-1zM38,37h1v1h-1zM2,38h7v1h-7zM10,38h1v1h-1zM14,38h1v1h-1zM16,38h4v1h-4zM21,38h4v1h-4zM27,38h3v1h-3zM31,38h3v1h-3zM35,38h4v1h-4z"/>
+              </svg>
+            </div>
+            <div style="font-size:0.85rem; font-weight:600; color:var(--on-surface);">
+              Paket Dataset &amp; Soal Latihan Pertemuan 1
+            </div>
+            <div class="qr-link-box">
+              <span id="bahan-link-text">https://drive.google.com/drive/folders/1mrvAWn9gKh-F5ATP8NdYWxe3MYTDTYfW?usp=sharing</span>
+              <button type="button" class="btn btn-primary btn-sm" style="min-height:30px; padding:0.2rem 0.55rem; font-size:0.75rem;" onclick="copyTextValue('bahan-link-text', this)">
+                <span>Salin Link</span>
+              </button>
+            </div>
+            <span class="muted" style="font-size:0.78rem;">Berisi: <code>data_survei_ewallet_mahasiswa.csv</code>, <code>data_kuesioner_umkm.xlsx</code> &amp; <code>Template_P1.ipynb</code></span>
+          </div>
+
+          <!-- Kolom Kanan: Soal Bagian A (Mandiri) & Bagian B (Kerjakan Bareng) -->
+          <div style="display:flex; flex-direction:column; gap:var(--space-md);">
+            <div class="figure-card figure-card--accent">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+                <span class="figure-label" style="color:var(--secondary);">BAGIAN A — WAJIB MANDIRI: DASAR PANDAS &amp; AUDIT DATA</span>
+                <span class="dossier-pill dossier-pill--teal" id="checklist-status">0 / 5 SELESAI</span>
+              </div>
+              <div class="checklist" id="task-checklist" style="margin-top:0.25rem;">
+                <button type="button" class="check-item" data-check="0" onclick="toggleCheck(0)">
+                  <span class="check-box" aria-hidden="true"></span>
+                  <span><strong>1. Persiapan Notebook:</strong> Buat notebook baru / <em>Save a Copy in Drive</em> dan unggah file <code>data_survei_ewallet_mahasiswa.csv</code> ke Colab.</span>
+                </button>
+                <button type="button" class="check-item" data-check="1" onclick="toggleCheck(1)">
+                  <span class="check-box" aria-hidden="true"></span>
+                  <span><strong>2. Membaca File CSV:</strong> Import <code>pandas as pd</code>, lalu baca file CSV ke variabel <code>df</code> menggunakan fungsi khusus CSV (bukan <code>read_excel</code>!).</span>
+                </button>
+                <button type="button" class="check-item" data-check="2" onclick="toggleCheck(2)">
+                  <span class="check-box" aria-hidden="true"></span>
+                  <span><strong>3. Mengintip Isi Data:</strong> Tampilkan <strong>5 baris pertama</strong> dan <strong>5 baris terakhir</strong> tabel data menggunakan <code>df.head()</code> dan <code>df.tail()</code>.</span>
+                </button>
+                <button type="button" class="check-item" data-check="3" onclick="toggleCheck(3)">
+                  <span class="check-box" aria-hidden="true"></span>
+                  <span><strong>4. Cek Ukuran &amp; Nama Kolom:</strong> Jalankan <code>df.shape</code> &amp; <code>df.columns</code>, lalu tulis di Sel Teks jumlah responden, jumlah kolom, dan 3 variabel utama kuesioner.</span>
+                </button>
+                <button type="button" class="check-item" data-check="4" onclick="toggleCheck(4)">
+                  <span class="check-box" aria-hidden="true"></span>
+                  <span><strong>5. Audit Tipe &amp; Data Kosong:</strong> Jalankan <code>df.info()</code>, lalu catat di Sel Teks kolom bertipe <code>object</code>/<code>int64</code>/<code>float64</code> serta <strong>kolom yang punya data kosong</strong> (<code>non-null &lt; 50</code>).</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="aside-box" style="border-top: 3px solid var(--primary-container);" id="checklist-feedback">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.45rem;">
+                <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+                  <span class="dossier-pill">BAGIAN B · KERJAKAN BARENG</span>
+                  <strong style="font-size:0.95rem;">Eksplorasi Data &amp; Skala Likert Bersama Pemateri</strong>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="toggle-bagian-b-btn" onclick="toggleBagianBCode()">
+                  <i data-lucide="code-2" aria-hidden="true" style="width:14px;height:14px;"></i>
+                  <span id="toggle-bagian-b-label">Tampilkan Kode Bagian B</span>
+                </button>
+              </div>
+
+              <div class="bedah-stage-list">
+                <div class="bedah-stage-item">
+                  <span class="index-num">06</span>
+                  <div style="font-size:0.88rem;"><strong>Profil Dompet Digital:</strong> Jalankan <code>df['E_Wallet_Utama'].value_counts()</code> untuk mencari aplikasi <em>e-wallet</em> yang <strong>paling banyak</strong> dan <strong>paling sedikit</strong> dipakai responden.</div>
+                </div>
+                <div class="bedah-stage-item">
+                  <span class="index-num">07</span>
+                  <div style="font-size:0.88rem;"><strong>Statistik Sederhana:</strong> Hitung <strong>rata-rata uang saku bulanan</strong> (<code>Uang_Saku_Bulanan_Rp</code>) dan <strong>rata-rata frekuensi transaksi mingguan</strong> (<code>Frekuensi_Transaksi_Mingguan</code>) pakai <code>.mean()</code>.</div>
+                </div>
+                <div class="bedah-stage-item">
+                  <span class="index-num">08</span>
+                  <div style="font-size:0.88rem;"><strong>Konversi Skala Likert (Bonus):</strong> Ubah kolom teks <code>KM_1</code>, <code>KM_2</code>, <code>KM_3</code> (<code>STS</code>–<code>SS</code>) menjadi angka <code>1–5</code> menggunakan kamus (<code>dict</code>) dan <code>.map()</code>, lalu tampilkan 5 baris pertamanya!</div>
+                </div>
+              </div>
+
+              <div class="bagian-b-toggle-panel" id="bagian-b-code-panel">
+                <div class="code-card">
+                  <div class="code-toolbar">
+                    <span class="code-lang">python · kerjakan_bareng_bagian_b.py</span>
+                    <button type="button" class="copy-btn" onclick="copyCode('code-bagian-b', this)">
+                      <i data-lucide="copy" aria-hidden="true" style="width:13px;height:13px;"></i>
+                      <span>Salin Kode</span>
+                    </button>
+                  </div>
+                  <pre class="code-pre" id="code-bagian-b"><code><span class="tok-com"># 6. Profil E-Wallet terbanyak &amp; tersedikit</span>
+<span class="tok-fn">print</span>(df[<span class="tok-str">'E_Wallet_Utama'</span>].<span class="tok-fn">value_counts</span>())
+
+<span class="tok-com"># 7. Rata-rata uang saku &amp; frekuensi transaksi mingguan</span>
+<span class="tok-fn">print</span>(<span class="tok-str">"Rata-rata Uang Saku:"</span>, df[<span class="tok-str">'Uang_Saku_Bulanan_Rp'</span>].<span class="tok-fn">mean</span>())
+<span class="tok-fn">print</span>(<span class="tok-str">"Rata-rata Transaksi:"</span>, df[<span class="tok-str">'Frekuensi_Transaksi_Mingguan'</span>].<span class="tok-fn">mean</span>())
+
+<span class="tok-com"># 8. Konversi Skala Likert teks (STS-SS) ke angka (1-5)</span>
+peta = {<span class="tok-str">'STS'</span>: <span class="tok-num">1</span>, <span class="tok-str">'TS'</span>: <span class="tok-num">2</span>, <span class="tok-str">'N'</span>: <span class="tok-num">3</span>, <span class="tok-str">'S'</span>: <span class="tok-num">4</span>, <span class="tok-str">'SS'</span>: <span class="tok-num">5</span>}
+<span class="tok-kw">for</span> col <span class="tok-kw">in</span> [<span class="tok-str">'KM_1'</span>, <span class="tok-str">'KM_2'</span>, <span class="tok-str">'KM_3'</span>]:
+    df[col + <span class="tok-str">'_num'</span>] = df[col].<span class="tok-fn">map</span>(peta)
+df[[<span class="tok-str">'KM_1'</span>, <span class="tok-str">'KM_1_num'</span>, <span class="tok-str">'KM_2'</span>, <span class="tok-str">'KM_2_num'</span>, <span class="tok-str">'KM_3'</span>, <span class="tok-str">'KM_3_num'</span>]].<span class="tok-fn">head</span>()</code></pre>
+                </div>
+                <div class="colab-output">Hasil Verifikasi: E-Wallet terbanyak GoPay (15) &amp; tersedikit OVO (4) | Rata-rata Uang Saku: Rp 1.413.000 | Rata-rata Frekuensi: 11.0x/minggu | Rata-rata Total Skor KM: 11.48</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: MEKANISME & DEADLINE PENGUMPULAN -->
+      <section class="slide" data-slide="9" data-title="Cara Kumpul Tugas &amp; Info Pertemuan 2" aria-label="Slide 9: Cara Pengumpulan Tugas">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">PENGUMPULAN TUGAS</span>
+            <span class="dossier-meta">FORMAT .IPYNB · PERSIAPAN PERTEMUAN 2</span>
+          </div>
+          <span class="slide-index-label">SLIDE 09 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Cara Mengumpulkan Hasil Praktik &amp; Info Pertemuan 2</h2>
+          <p class="standfirst">Download hasil kerja Anda dalam format <code>.ipynb</code> dan beri nama file sesuai format agar mudah direkap panitia.</p>
+        </div>
+
+        <div class="grid-2">
+          <div style="display:flex; flex-direction:column; gap:var(--space-md);">
+            <div class="figure-card figure-card--white">
+              <span class="index-num">LANGKAH UPLOAD</span>
+              <ol style="margin:0.4rem 0 0; padding-left:1.25rem; display:flex; flex-direction:column; gap:0.45rem;">
+                <li>Di Google Colab, klik menu <strong>File → Download → Download .ipynb</strong>.</li>
+                <li>Ubah nama file menjadi: <strong><code>Nama_NIM_Pertemuan1.ipynb</code></strong>.</li>
+                <li>Kirim ke <strong>Link Google Form / Drive Panitia HIMAPROMI</strong> (dibagikan di grup) sebelum batas waktu hari ini.</li>
+              </ol>
+            </div>
+
+            <div class="figure-card figure-card--accent">
+              <span class="figure-label" style="color: var(--secondary);">BUAT NAMA FILE OTOMATIS (TINGGAL KETIK)</span>
+              <div class="grid-2" style="gap:var(--space-sm); margin-top:0.25rem;">
+                <div class="field-group">
+                  <label class="field-label" for="input-nama">Nama Lengkap</label>
+                  <input type="text" id="input-nama" class="field-input" value="Ahmad_Rizqy" oninput="updateFilename()" placeholder="Contoh: Ahmad_Rizqy">
+                </div>
+                <div class="field-group">
+                  <label class="field-label" for="input-nim">NIM</label>
+                  <input type="text" id="input-nim" class="field-input" value="2442400062" oninput="updateFilename()" placeholder="Contoh: 2442400062">
+                </div>
+              </div>
+              <div class="filename-preview" style="margin-top:0.5rem;">
+                <span id="filename-result">Ahmad_Rizqy_2442400062_Pertemuan1.ipynb</span>
+                <button type="button" class="copy-btn" onclick="copyTextValue('filename-result', this)">
+                  <i data-lucide="copy" aria-hidden="true" style="width:13px;height:13px;"></i>
+                  <span>Salin Nama</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--space-md);">
+            <div class="aside-box" style="border-top: 3px solid var(--secondary);">
+              <span class="dossier-pill">BOCORAN PERTEMUAN 2</span>
+              <h3 style="font-family:var(--font-headline); margin:0.65rem 0 0.35rem; font-size:1.35rem;">Kamis, 10 Desember 2026: Membersihkan Data &amp; Membuat Grafik</h3>
+              <p class="prose muted" style="font-size:0.925rem;">Data asli dari lapangan biasanya berantakan. Minggu depan kita akan praktik langsung:</p>
+              <ul style="margin:0.5rem 0 0; padding-left:1.2rem; display:flex; flex-direction:column; gap:0.35rem; font-size:0.925rem;">
+                <li>Menemukan dan membereskan <strong>data kosong</strong>, data ganda, dan salah ketik.</li>
+                <li>Membalik skor (<em>reverse coding</em>) untuk pertanyaan kuesioner yang bersifat negatif.</li>
+                <li>Menjumlahkan <strong>skor total tiap variabel</strong> dan membuat tabel profil responden.</li>
+                <li>Membuat <strong>grafik batang, histogram, dan diagram lingkaran</strong> otomatis.</li>
+              </ul>
+            </div>
+
+            <div class="callout-warning">
+              <strong>Ingat Syarat Sertifikat:</strong> Hadir minimal <strong>3 dari 4 pertemuan</strong>, mengumpulkan tugas Pertemuan 1–3, dan menyelesaikan Proyek Akhir di Pertemuan 4.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: PENUTUP & TANYA JAWAB -->
+      <section class="slide" data-slide="10" data-title="Penutup &amp; Sesi Tanya Jawab" aria-label="Slide 10: Penutup dan Tanya Jawab">
+        <header class="dossier-bar">
+          <div class="dossier-bar-left">
+            <span class="dossier-pill">PENUTUP &amp; TANYA JAWAB</span>
+            <span class="dossier-meta">DISKUSI · SOLUSI ERROR · HIMAPROMI UNUJA</span>
+          </div>
+          <span class="slide-index-label">SLIDE 10 / 10</span>
+        </header>
+
+        <div class="slide-head">
+          <h2 class="slide-title">Terima Kasih — Ada Kendala atau Pertanyaan?</h2>
+          <p class="standfirst">Muncul tulisan error merah di Google Colab atau file Excel belum terbaca? Yuk kita cek dan selesaikan bareng sekarang.</p>
+        </div>
+
+        <div class="manifesto-quote" style="padding: var(--space-lg) var(--space-xl);">
+          <blockquote>“Belajar coding dan olah data itu bukan soal menghafal semua perintah, tapi keberanian mencoba baris kode pertama sampai ketemu hasilnya.”</blockquote>
+          <span style="font-family:var(--font-label); font-size:0.85rem; color:var(--primary-container);">— MOH. GHAZY A. ALGHIFARI · PEMATERI SKILLNOMICS 2026</span>
+        </div>
+
+        <div class="card-grid">
+          <div class="figure-card figure-card--white">
+            <span class="index-num">MASALAH 01</span>
+            <strong>Muncul <code>FileNotFoundError</code>?</strong>
+            <p class="muted" style="margin:0; font-size:0.875rem;">Cek apakah file Excel sudah di-upload ke menu Folder kiri Colab, dan pastikan penulisan nama file di dalam tanda kutip persis sama.</p>
+          </div>
+          <div class="figure-card figure-card--white">
+            <span class="index-num">MASALAH 02</span>
+            <strong>Koneksi Terputus / Halaman Reload?</strong>
+            <p class="muted" style="margin:0; font-size:0.875rem;">Kode Anda aman di Drive kalau sudah <em>Save a Copy in Drive</em>. Tinggal upload ulang file Excel-nya lalu klik <strong>Runtime → Run all</strong>.</p>
+          </div>
+          <div class="figure-card figure-card--white">
+            <span class="index-num">MASALAH 03</span>
+            <strong>Muncul <code>NameError: pd is not defined</code>?</strong>
+            <p class="muted" style="margin:0; font-size:0.875rem;">Artinya baris <code>import pandas as pd</code> di bagian paling atas belum dijalankan. Jalankan dulu sel paling atas sebelum membaca file Excel.</p>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-sm); margin-top:auto;">
+          <span class="dossier-meta">HIMPUNAN MAHASISWA PRODI EKONOMI PEMBANGUNAN · UNIVERSITAS NURUL JADID</span>
+          <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+            <button type="button" class="btn btn-secondary" onclick="goToSlide(7)">Panduan Praktik</button>
+            <button type="button" class="btn btn-gold" onclick="goToSlide(8)">QR Bahan &amp; Penugasan</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Controls -->
+    <nav class="deck-controls" aria-label="Navigasi Slide">
+      <button type="button" class="btn btn-secondary" id="prev-btn" onclick="prevSlide()">
+        <i data-lucide="arrow-left" aria-hidden="true" style="width:16px;height:16px;"></i>
+        <span>Sebelumnya</span>
+      </button>
+
+      <div class="slide-dots" id="slide-dots" role="tablist" aria-label="Pilih Nomor Slide"></div>
+
+      <button type="button" class="btn btn-primary" id="next-btn" onclick="nextSlide()">
+        <span>Berikutnya</span>
+        <i data-lucide="arrow-right" aria-hidden="true" style="width:16px;height:16px;"></i>
+      </button>
+
+      <div class="kbd-hint">Pintasan Keyboard: Panah Kiri / Kanan atau Spasi untuk pindah slide · Tombol F untuk Layar Penuh · Tombol G untuk Daftar Slide</div>
+    </nav>
+  </div>
+
+  <!-- Slide Index / Overview Modal -->
+  <div class="index-drawer" id="index-drawer" role="dialog" aria-modal="true" aria-labelledby="index-title">
+    <div class="index-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:var(--section-rule); padding-bottom:var(--space-sm);">
+        <div>
+          <span class="dossier-pill">NAVIGASI CEPAT</span>
+          <h2 id="index-title" style="font-family:var(--font-headline); margin:0.35rem 0 0; font-size:1.35rem;">Daftar Isi Slide Pertemuan 1 (10 Slide)</h2>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="toggleOverview(false)" aria-label="Tutup Daftar Slide">
+          <i data-lucide="x" aria-hidden="true" style="width:16px;height:16px;"></i>
+          <span>Tutup</span>
+        </button>
+      </div>
+      <div class="index-grid" id="index-grid"></div>
+    </div>
+  </div>
+
+  <api-shim></api-shim>
+
+  <script>
+    const TOTAL_SLIDES = 10;
+    let currentSlide = 1;
+    let checklistState = [false, false, false, false, false];
+    let likertScores = [4, 5, 3];
+    let likertLabels = [`S`, `SS`, `N`];
+
+    const PY_TYPES = {
+      int: {
+        badge: `INTEGER (INT) · BILANGAN BULAT`,
+        title: `Untuk Jumlah Responden & Skor Kuesioner`,
+        desc: `Dipakai untuk angka utuh tanpa koma, misalnya jumlah responden (45 orang), umur, atau skor jawaban kuesioner dari 1 sampai 5.`,
+        example: `jumlah_umkm = 45`
+      },
+      float: {
+        badge: `FLOAT · BILANGAN DESIMAL`,
+        title: `Untuk Nilai Rata-Rata & Hasil Uji Statistik`,
+        desc: `Dipakai untuk angka berkoma (di Python pakai tanda titik), seperti nilai rata-rata skor, nilai validitas, atau persentase pertumbuhan.`,
+        example: `cronbach_alpha = 0.842`
+      },
+      str: {
+        badge: `STRING (STR) · TEKS & KATEGORI`,
+        title: `Untuk Nama Variabel, Kategori & Nama File`,
+        desc: `Dipakai untuk tulisan yang diapit tanda kutip ('...' atau "..."). Contohnya jenis usaha responden atau nama file Excel yang mau dibuka.`,
+        example: `sektor_usaha = "Kuliner & Perdagangan"`
+      },
+      list: {
+        badge: `LIST · DAFTAR KUMPULAN DATA`,
+        title: `Untuk Menampung Banyak Skor Sekaligus`,
+        desc: `Ditulis di dalam kurung siku [...] untuk mengumpulkan beberapa skor jawaban agar bisa langsung dijumlahkan dengan sum() atau dihitung rata-ratanya.`,
+        example: `skor_butir_x1 = [4, 5, 4, 3, 5]`
+      }
+    };
+
+    const PANDAS_VIEWS = {
+      head: {
+        title: `df.head() — Mengintip 5 Responden Pertama`,
+        desc: `Untuk memastikan judul kolom berada di baris paling atas dan angka skor tidak berantakan.`,
+        output: `   ID_Resp  Jenis_Usaha  X1_1  X1_2  X1_3  Y_1  Y_2
+0     R001      Kuliner     4     5     4    5    4
+1     R002      Fashion     5     4     5    4    5
+2     R003         Jasa     3     4     3    4    3
+3     R004   Agribisnis     4     4     5    5    4
+4     R005      Kuliner     5     5     4    5    5`
+      },
+      shape: {
+        title: `df.shape — Mengecek Jumlah Baris & Kolom`,
+        desc: `Menampilkan pasangan (jumlah_responden, jumlah_kolom). Ditulis tanpa tanda kurung di belakangnya.`,
+        output: `(45, 12)
+# Artinya: Ada 45 orang responden (baris) dan 12 kolom data.`
+      },
+      columns: {
+        title: `df.columns — Melihat Semua Nama Kolom`,
+        desc: `Berguna untuk mengecek apakah ada spasi berlebih atau salah ketik pada judul kolom sebelum dihitung.`,
+        output: `Index(['ID_Resp', 'Jenis_Usaha', 'Omzet_Bulanan', 'X1_1', 'X1_2',
+       'X1_3', 'X1_4', 'X2_1', 'X2_2', 'Y_1', 'Y_2', 'Y_3'], dtype='object')`
+      },
+      info: {
+        title: `df.info() — Mengecek Kelengkapan Data`,
+        desc: `Sangat membantu untuk melihat apakah ada jawaban responden yang kosong atau kolom angka yang terbaca sebagai teks.`,
+        output: `<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 45 entries, 0 to 44
+Data columns (total 12 columns):
+ #   Column         Non-Null Count  Dtype 
+---  ------         --------------  ----- 
+ 0   ID_Resp        45 non-null     object
+ 1   Jenis_Usaha    45 non-null     object
+ 2   Omzet_Bulanan  45 non-null     int64 
+ 3   X1_1           45 non-null     int64 
+ ... (semua 12 kolom terisi lengkap)`
+      }
+    };
+
+    function pad2(n) {
+      return n < 10 ? `0${n}` : `${n}`;
+    }
+
+    function buildNavDotsAndIndex() {
+      const dotsEl = document.getElementById(`slide-dots`);
+      const indexGrid = document.getElementById(`index-grid`);
+      const slides = document.querySelectorAll(`.slide`);
+      if (!dotsEl || !indexGrid) return;
+
+      dotsEl.innerHTML = ``;
+      indexGrid.innerHTML = ``;
+
+      slides.forEach(function (slideEl, idx) {
+        const num = idx + 1;
+        const title = slideEl.getAttribute(`data-title`) || `Slide ${num}`;
+
+        const dot = document.createElement(`button`);
+        dot.type = `button`;
+        dot.className = `dot-btn`;
+        dot.textContent = pad2(num);
+        dot.setAttribute(`aria-label`, `Ke Slide ${num}: ${title}`);
+        dot.setAttribute(`title`, `${pad2(num)} — ${title}`);
+        dot.onclick = function () { goToSlide(num); };
+        dotsEl.appendChild(dot);
+
+        const card = document.createElement(`button`);
+        card.type = `button`;
+        card.className = `index-card`;
+        card.onclick = function () {
+          goToSlide(num);
+          toggleOverview(false);
+        };
+        card.innerHTML = `<span class="index-num">SLIDE ${pad2(num)}</span><strong>${title}</strong>`;
+        indexGrid.appendChild(card);
+      });
+    }
+
+    function renderSlideState() {
+      const slides = document.querySelectorAll(`.slide`);
+      slides.forEach(function (s, idx) {
+        if (idx + 1 === currentSlide) {
+          s.classList.add(`is-active`);
+        } else {
+          s.classList.remove(`is-active`);
+        }
+      });
+
+      const counterEl = document.getElementById(`slide-counter`);
+      if (counterEl) counterEl.textContent = `${pad2(currentSlide)} / ${pad2(TOTAL_SLIDES)}`;
+
+      const progressEl = document.getElementById(`progress-fill`);
+      if (progressEl) progressEl.style.width = `${(currentSlide / TOTAL_SLIDES) * 100}%`;
+
+      const barWrap = document.getElementById(`deck-progressbar`);
+      if (barWrap) barWrap.setAttribute(`aria-valuenow`, String(currentSlide));
+
+      const prevBtn = document.getElementById(`prev-btn`);
+      const nextBtn = document.getElementById(`next-btn`);
+      if (prevBtn) prevBtn.disabled = currentSlide === 1;
+      if (nextBtn) nextBtn.disabled = currentSlide === TOTAL_SLIDES;
+
+      const dots = document.querySelectorAll(`.dot-btn`);
+      dots.forEach(function (d, idx) {
+        if (idx + 1 === currentSlide) d.classList.add(`is-current`);
+        else d.classList.remove(`is-current`);
+      });
+
+      const indexCards = document.querySelectorAll(`.index-card`);
+      indexCards.forEach(function (c, idx) {
+        if (idx + 1 === currentSlide) c.classList.add(`is-current`);
+        else c.classList.remove(`is-current`);
+      });
+
+      window.scrollTo({ top: 0, behavior: `smooth` });
+    }
+
+    function goToSlide(n) {
+      if (n < 1 || n > TOTAL_SLIDES) return;
+      currentSlide = n;
+      renderSlideState();
+      persistState();
+    }
+
+    function nextSlide() {
+      if (currentSlide < TOTAL_SLIDES) goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    function toggleOverview(forceOpen) {
+      const drawer = document.getElementById(`index-drawer`);
+      if (!drawer) return;
+      if (forceOpen) drawer.classList.add(`is-open`);
+      else drawer.classList.remove(`is-open`);
+    }
+
+    function toggleFullscreen() {
+      const root = document.documentElement;
+      const label = document.getElementById(`fullscreen-label`);
+      if (!document.fullscreenElement) {
+        if (root.requestFullscreen) {
+          root.requestFullscreen().then(function () {
+            if (label) label.textContent = `Keluar Layar Penuh`;
+          }).catch(function () {
+            if (label) label.textContent = `Layar Penuh`;
+          });
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().then(function () {
+            if (label) label.textContent = `Layar Penuh`;
+          }).catch(function () {});
+        }
+      }
+    }
+
+    function runColabDemo() {
+      const out = document.getElementById(`colab-demo-output`);
+      if (!out) return;
+      out.textContent = `✓ Berhasil dijalankan (0.08 detik di server Google)
+Selamat datang di SKILLNOMICS! Target: 120 peserta`;
+    }
+
+    function selectPyType(typeKey, btn) {
+      const info = PY_TYPES[typeKey];
+      if (!info) return;
+      const parent = btn ? btn.parentElement : null;
+      if (parent) {
+        parent.querySelectorAll(`.tab-btn`).forEach(function (b) {
+          b.classList.remove(`is-selected`);
+        });
+      }
+      if (btn) btn.classList.add(`is-selected`);
+
+      const badgeEl = document.getElementById(`pytype-badge`);
+      const titleEl = document.getElementById(`pytype-title`);
+      const descEl = document.getElementById(`pytype-desc`);
+      const exEl = document.getElementById(`pytype-example`);
+      if (badgeEl) badgeEl.textContent = info.badge;
+      if (titleEl) titleEl.textContent = info.title;
+      if (descEl) descEl.textContent = info.desc;
+      if (exEl) exEl.textContent = info.example;
+    }
+
+    function setLikert(qIndex, val, label, btn) {
+      likertScores[qIndex] = val;
+      likertLabels[qIndex] = label;
+      const parent = btn ? btn.parentElement : null;
+      if (parent) {
+        parent.querySelectorAll(`.likert-choice-btn`).forEach(function (b) {
+          b.classList.remove(`is-active`);
+        });
+      }
+      if (btn) btn.classList.add(`is-active`);
+
+      const total = likertScores[0] + likertScores[1] + likertScores[2];
+      const mean = (total / 3).toFixed(2);
+      const out = document.getElementById(`likert-live-output`);
+      if (out) {
+        out.textContent = `Jawaban Teks: ['${likertLabels[0]}', '${likertLabels[1]}', '${likertLabels[2]}']
+Berubah Jadi Angka: [${likertScores[0]}, ${likertScores[1]}, ${likertScores[2]}]
+Total Skor Variabel X1: ${total}  |  Rata-rata: ${mean}`;
+      }
+    }
+
+    function selectPandasView(key, btn) {
+      const view = PANDAS_VIEWS[key];
+      if (!view) return;
+      const parent = btn ? btn.parentElement : null;
+      if (parent) {
+        parent.querySelectorAll(`.tab-btn`).forEach(function (b) {
+          b.classList.remove(`is-selected`);
+        });
+      }
+      if (btn) btn.classList.add(`is-selected`);
+
+      const t = document.getElementById(`pandas-method-title`);
+      const d = document.getElementById(`pandas-method-desc`);
+      const o = document.getElementById(`pandas-output-box`);
+      if (t) t.textContent = view.title;
+      if (d) d.textContent = view.desc;
+      if (o) o.textContent = view.output;
+    }
+
+    function renderChecklist() {
+      const items = document.querySelectorAll(`.check-item`);
+      let done = 0;
+      items.forEach(function (item, idx) {
+        const box = item.querySelector(`.check-box`);
+        if (checklistState[idx]) {
+          item.classList.add(`is-checked`);
+          if (box) box.textContent = `✓`;
+          done += 1;
+        } else {
+          item.classList.remove(`is-checked`);
+          if (box) box.textContent = ``;
+        }
+      });
+
+      const statusEl = document.getElementById(`checklist-status`);
+      if (statusEl) statusEl.textContent = `${done} / ${checklistState.length} SELESAI`;
+    }
+
+
+    function toggleBagianBCode() {
+      const panel = document.getElementById(`bagian-b-code-panel`);
+      const label = document.getElementById(`toggle-bagian-b-label`);
+      if (!panel) return;
+      const isOpen = panel.classList.toggle(`is-open`);
+      if (label) {
+        label.textContent = isOpen ? `Sembunyikan Kode Bagian B` : `Tampilkan Kode Bagian B`;
+      }
+    }
+
+    function toggleCheck(idx) {
+      checklistState[idx] = !checklistState[idx];
+      renderChecklist();
+      persistState();
+    }
+
+    function updateFilename() {
+      const namaInput = document.getElementById(`input-nama`);
+      const nimInput = document.getElementById(`input-nim`);
+      const preview = document.getElementById(`filename-result`);
+      if (!preview) return;
+
+      const rawNama = namaInput && namaInput.value.trim() ? namaInput.value.trim() : `Nama_Lengkap`;
+      const rawNim = nimInput && nimInput.value.trim() ? nimInput.value.trim() : `NIM`;
+      const cleanNama = rawNama.replace(/\s+/g, `_`).replace(/[^a-zA-Z0-9_]/g, ``);
+      const cleanNim = rawNim.replace(/\s+/g, ``).replace(/[^a-zA-Z0-9]/g, ``);
+      preview.textContent = `${cleanNama || `Nama`}_${cleanNim || `NIM`}_Pertemuan1.ipynb`;
+    }
+
+    function showCopiedFeedback(btn, originalHtml) {
+      if (!btn) return;
+      btn.classList.add(`is-copied`);
+      btn.innerHTML = `<span>Tersalin ✓</span>`;
+      setTimeout(function () {
+        btn.classList.remove(`is-copied`);
+        btn.innerHTML = originalHtml;
+        if (window.lucide) window.lucide.createIcons();
+      }, 1600);
+    }
+
+    function copyTextToClipboard(text, btn) {
+      const orig = btn ? btn.innerHTML : ``;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          showCopiedFeedback(btn, orig);
+        }).catch(function () {
+          fallbackCopy(text, btn, orig);
+        });
+      } else {
+        fallbackCopy(text, btn, orig);
+      }
+    }
+
+    function fallbackCopy(text, btn, orig) {
+      const ta = document.createElement(`textarea`);
+      ta.value = text;
+      ta.style.position = `fixed`;
+      ta.style.opacity = `0`;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand(`copy`);
+        showCopiedFeedback(btn, orig);
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function copyCode(elementId, btn) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      copyTextToClipboard(el.textContent || ``, btn);
+    }
+
+    function copyTextValue(elementId, btn) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      copyTextToClipboard(el.textContent || ``, btn);
+    }
+
+    async function persistState() {
+      if (!window.notebookAppApi || !window.notebookAppApi.setAppState) return;
+      try {
+        await window.notebookAppApi.setAppState({
+          currentSlide: currentSlide,
+          checklistState: checklistState
+        });
+      } catch (e) {}
+    }
+
+    async function initApp() {
+      buildNavDotsAndIndex();
+
+      if (window.notebookAppApi && window.notebookAppApi.getAppState) {
+        try {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved) {
+            if (typeof saved.currentSlide === `number` && saved.currentSlide >= 1 && saved.currentSlide <= TOTAL_SLIDES) {
+              currentSlide = saved.currentSlide;
+            }
+            if (Array.isArray(saved.checklistState) && saved.checklistState.length === checklistState.length) {
+              checklistState = saved.checklistState;
+            }
+          }
+        } catch (e) {}
+      }
+
+      renderSlideState();
+      renderChecklist();
+      updateFilename();
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+
+      if (window.notebookAppApi && window.notebookAppApi.notifyAppReady) {
+        window.notebookAppApi.notifyAppReady();
+      }
+    }
+
+    document.addEventListener(`keydown`, function (e) {
+      const activeTag = document.activeElement ? document.activeElement.tagName : ``;
+      if (activeTag === `INPUT` || activeTag === `TEXTAREA`) return;
+
+      const drawer = document.getElementById(`index-drawer`);
+      if (e.key === `Escape` && drawer && drawer.classList.contains(`is-open`)) {
+        toggleOverview(false);
+        return;
+      }
+      if (e.key === `ArrowRight` || e.key === `PageDown` || e.key === ` `) {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === `ArrowLeft` || e.key === `PageUp`) {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === `Home`) {
+        e.preventDefault();
+        goToSlide(1);
+      } else if (e.key === `End`) {
+        e.preventDefault();
+        goToSlide(TOTAL_SLIDES);
+      } else if (e.key === `f` || e.key === `F`) {
+        toggleFullscreen();
+      } else if (e.key === `g` || e.key === `G`) {
+        const isOpen = drawer && drawer.classList.contains(`is-open`);
+        toggleOverview(!isOpen);
+      }
+    });
+
+    (function bindTouchSwipe() {
+      let touchStartX = 0;
+      const stage = document.getElementById(`slide-stage`);
+      if (!stage) return;
+      stage.addEventListener(`touchstart`, function (e) {
+        if (e.changedTouches && e.changedTouches[0]) {
+          touchStartX = e.changedTouches[0].screenX;
+        }
+      }, { passive: true });
+      stage.addEventListener(`touchend`, function (e) {
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+        const diff = e.changedTouches[0].screenX - touchStartX;
+        if (diff < -60) nextSlide();
+        else if (diff > 60) prevSlide();
+      }, { passive: true });
+    })();
+
+    document.addEventListener(`fullscreenchange`, function () {
+      const label = document.getElementById(`fullscreen-label`);
+      if (label) {
+        label.textContent = document.fullscreenElement ? `Keluar Layar Penuh` : `Layar Penuh`;
+      }
+    });
+
+    document.addEventListener(`DOMContentLoaded`, initApp);
+  </script>
+</body>
+</html>
